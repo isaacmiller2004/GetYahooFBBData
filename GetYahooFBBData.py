@@ -14,7 +14,7 @@ def main():
 	if selection1 == 1:
 		end_filename = 'Pitchers'
 	if selection1 == 2:
-		end_filename = 'Batters'
+		end_filename = 'Hitters'
 
 	filename = 'FBB_data_' + str(leagueID) + '_' + end_filename + '_' + str(datetime.date.today()) + '.csv'
 	ofile = open(filename, "wb")
