@@ -7,7 +7,7 @@ import datetime
 import sys
 
 def main():
-	
+
 	(selection1, selection2, selection3, leagueID, maxPages, username, password) = selection_menu()
 	url = buildURL(selection1, selection2, selection3, leagueID)
 
@@ -29,9 +29,11 @@ def main():
 	br.open("https://login.yahoo.com/config/login_verify2?&.src=ym&.intl=us")
 	br.select_form(nr=0)
 	br.form["username"] = username
+	submit_response = br.submit()
+	br.select_form(nr=0)
 	br.form["passwd"] = password
 	br.submit()
-	
+
 	content = br.open(url + '0')
 	soup = BeautifulSoup(content)
 	statsList = soup.findAll('th', {'class':'Ta-end'})
@@ -44,8 +46,8 @@ def main():
 			stats.remove("Rankings")
 		except:
 			continue
-			
-	writer.writerow(stats)	
+
+	writer.writerow(stats)
 	pageNum = 0
 
 	while True:
@@ -57,18 +59,18 @@ def main():
 		players = soup.findAll('div', {'class':'ysf-player-name Nowrap Grid-u Relative Lh-xs Ta-start'})
 		dataList = soup.findAll('td', {'class': 'Ta-end'})
 		fantasyTeams = soup.findAll('div', {'style':'text-overflow: ellipsis; overflow: hidden;'})
-		
+
 		fanTeams = []
 		for f in fantasyTeams:
 			tmpf = str(f.findAll(text=True))[3:len(f)-3]
 			fanTeams.append(fixText(tmpf))
-				
+
 		# Exit condition
 		try:
 			str(players[0].findAll(text=True))
 		except:
 			break
-			
+
 		for player in players:
 			playerStats = []
 			pNum = count*(len(stats)-4)
@@ -82,7 +84,7 @@ def main():
 				tmp = tmp[3:len(tmp)-2]
 				if tmp.find("/") != -1:
 					playerStats.append("'" + tmp + "'")
-				else: 
+				else:
 					playerStats.append(tmp)
 			writer.writerow(playerStats)
 			count += 1
@@ -139,12 +141,12 @@ def selection_menu():
 	print "-------------"
 	print "25 Players per page, sorted by O-Rank\nEnter 99 for all pages"
 	print "-------------"
-	try: 
+	try:
 		maxPages = input("Enter Max Pages: ")
 	except:
 		print "Bad Selection. Exiting..."
 		sys.exit()
-		
+
 	username = raw_input("\nEnter Yahoo! username: ")
 	password = getpass.getpass(prompt="Enter Yahoo! password: ")
 
@@ -155,7 +157,7 @@ def buildURL(type, time, available, leagueID):
 
 	begin_url = 'http://baseball.fantasysports.yahoo.com/b1/' + str(leagueID) + '/players?status='
 	end_url = '&myteam=0&sort=OR&sdir=1&count='
-	
+
 	if available == 1: status = 'ALL'
 	if available == 2: status = 'A'
 	if type == 1: pos = 'P'
@@ -166,7 +168,7 @@ def buildURL(type, time, available, leagueID):
 	if time == 4: timeFrame = 'L14'
 	if time == 5: timeFrame = 'L7'
 	if time == 6: timeFrame = 'L'
-	
+
 	mid_url = status + '&pos=' + pos + '&cut_type=33&stat1=S_' + timeFrame
 	return begin_url + mid_url + end_url
 
@@ -184,10 +186,10 @@ def getTeamAndPosition(data):
 	else:
 		teampos = playerData[5]
 	team = teampos[0:teampos.find("-")-1]
-	pos = teampos[teampos.find("-")+2:len(teampos)]	
+	pos = teampos[teampos.find("-")+2:len(teampos)]
 	return (team, pos)
-	
-	
+
+
 def fixText(str):
 	s = str
 	s = s.replace('\\xe1', 'a')
@@ -202,7 +204,7 @@ def fixText(str):
 	s = s.replace('\\xfa', 'u')
 	s = s.replace('\\xda', 'U')
 	s = s.replace('\\xf1', 'n')
-	return s	
-	
+	return s
+
 if __name__ == "__main__":
 	main()
