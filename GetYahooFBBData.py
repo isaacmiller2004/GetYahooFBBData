@@ -35,7 +35,7 @@ def main():
 	br.submit()
 
 	content = br.open(url + '0')
-	soup = BeautifulSoup(content)
+	soup = BeautifulSoup(content, "html.parser")
 	statsList = soup.findAll('th', {'class':'Ta-end'})
 	stats = ['Name', 'Team', 'Pos', 'Fantasy Team']
 	for s in statsList:
@@ -55,7 +55,7 @@ def main():
 		pageCount = str(pageNum * 25)
 		print "Loading page",(pageNum+1)
 		content = br.open(url + pageCount)
-		soup = BeautifulSoup(content)
+		soup = BeautifulSoup(content, "html.parser")
 		players = soup.findAll('div', {'class':'ysf-player-name Nowrap Grid-u Relative Lh-xs Ta-start'})
 		dataList = soup.findAll('td', {'class': 'Ta-end'})
 		fantasyTeams = soup.findAll('div', {'style':'text-overflow: ellipsis; overflow: hidden;'})
@@ -115,10 +115,10 @@ def selection_menu():
 
 	print "\nTime frame:"
 	print "-------------"
-	print "1. 2015 Total\n2. 2014 Total\n3. Last 30 Days\n4. Last 14 Days\n5. Last 7 Days\n6. Today"
+	print "1. 2017 Total\n2. 2016 Total\n3. 2015 Total\n4. Last 30 Days\n5. Last 14 Days\n6. Last 7 Days\n7. Today"
 	print "-------------"
 	try:
-		selection2 = input("Enter 1, 2, 3, 4, 5, or 6: ")
+		selection2 = input("Enter 1, 2, 3, 4, 5, 6 or 7: ")
 	except:
 		print "Bad Selection. Exiting..."
 		sys.exit()
@@ -162,12 +162,13 @@ def buildURL(type, time, available, leagueID):
 	if available == 2: status = 'A'
 	if type == 1: pos = 'P'
 	if type == 2: pos = 'B'
-	if time == 1: timeFrame = 'S_2015'
-	if time == 2: timeFrame = 'S_2014'
-	if time == 3: timeFrame = 'L30'
-	if time == 4: timeFrame = 'L14'
-	if time == 5: timeFrame = 'L7'
-	if time == 6: timeFrame = 'L'
+	if time == 1: timeFrame = 'S_2017'
+	if time == 2: timeFrame = 'S_2016'
+	if time == 3: timeFrame = 'S_2015'
+	if time == 4: timeFrame = 'L30'
+	if time == 5: timeFrame = 'L14'
+	if time == 6: timeFrame = 'L7'
+	if time == 7: timeFrame = 'L'
 
 	mid_url = status + '&pos=' + pos + '&cut_type=33&stat1=S_' + timeFrame
 	return begin_url + mid_url + end_url
