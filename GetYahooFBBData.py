@@ -31,7 +31,7 @@ def main():
 	br.form["username"] = username
 	submit_response = br.submit()
 	br.select_form(nr=0)
-	br.form["passwd"] = password
+	br.form["password"] = password
 	br.submit()
 
 	content = br.open(url + '0')
@@ -115,7 +115,7 @@ def selection_menu():
 
 	print "\nTime frame:"
 	print "-------------"
-	print "1. 2017 Total\n2. 2016 Total\n3. 2015 Total\n4. Last 30 Days\n5. Last 14 Days\n6. Last 7 Days\n7. Today"
+	print "1. 2018 Total\n2. 2017 Total\n3. 2016 Total\n4. Last 30 Days\n5. Last 14 Days\n6. Last 7 Days\n7. Today"
 	print "-------------"
 	try:
 		selection2 = input("Enter 1, 2, 3, 4, 5, 6 or 7: ")
@@ -162,9 +162,9 @@ def buildURL(type, time, available, leagueID):
 	if available == 2: status = 'A'
 	if type == 1: pos = 'P'
 	if type == 2: pos = 'B'
-	if time == 1: timeFrame = 'S_2017'
-	if time == 2: timeFrame = 'S_2016'
-	if time == 3: timeFrame = 'S_2015'
+	if time == 1: timeFrame = 'S_2018'
+	if time == 2: timeFrame = 'S_2017'
+	if time == 3: timeFrame = 'S_2016'
 	if time == 4: timeFrame = 'L30'
 	if time == 5: timeFrame = 'L14'
 	if time == 6: timeFrame = 'L7'
